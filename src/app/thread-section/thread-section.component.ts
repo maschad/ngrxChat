@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ThreadsService} from "../services/threads.service";
+import {Store} from "@ngrx/store";
+import {ApplicationState} from "../store/application-state";
+import {LoadUserThreadsAction} from "../store/actions";
+import {stat} from "fs";
 
 @Component({
   selector: 'thread-section',
@@ -8,12 +12,20 @@ import {ThreadsService} from "../services/threads.service";
 })
 export class ThreadSectionComponent implements OnInit {
 
-  constructor(private threadsService: ThreadsService) { }
+  constructor(private threadsService: ThreadsService, private store:Store<ApplicationState>) {
+      store.subscribe(
+          state => console.log('thread section recieved state', state)
+      )
+  }
 
   ngOnInit() {
 
       this.threadsService.loadUserThreads().
-      subscribe( console.log);
+      subscribe(
+          allUserData => this.store.dispatch(
+              new LoadUserThreadsAction(allUserData)
+          )
+      );
   }
 
 }

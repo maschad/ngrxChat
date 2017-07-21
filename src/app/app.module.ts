@@ -19,7 +19,7 @@ export function storeReducer(state: ApplicationState, action:Action): Applicatio
 
     switch (action.type){
         case LOAD_USER_THREADS_ACTION:
-            return handleLoadUserThreadsAction(state,action.payload);
+            return handleLoadUserThreadsAction(state,action);
 
         default:
             return state;

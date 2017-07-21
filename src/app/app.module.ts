@@ -15,7 +15,7 @@ import {INITIAL_APPLICATION_STATE, ApplicationState} from "./store/application-s
 import {LOAD_USER_THREADS_ACTION, LoadUserThreadsAction} from "./store/actions";
 import {tassign} from "tassign";
 
-export function storeReducer(state: ApplicationState, action:Action): ApplicationState {
+export function storeReducer(state: ApplicationState = INITIAL_APPLICATION_STATE, action:Action): ApplicationState {
 
     switch (action.type){
         case LOAD_USER_THREADS_ACTION:

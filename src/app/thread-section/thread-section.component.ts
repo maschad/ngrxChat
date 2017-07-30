@@ -4,6 +4,11 @@ import {Store} from "@ngrx/store";
 import {ApplicationState} from "../store/application-state";
 import {LoadUserThreadsAction} from "../store/actions";
 import {Observable} from "rxjs";
+import {ThreadSummaryVM} from "./thread-summary.vm";
+import {mapStateToUserName} from "./mapStateToUserName";
+import {mapStateToUnreadMessagesCounter} from "./mapStateToUnreadMessagesCounter";
+import * as _ from 'lodash';
+import {Thread} from "../../../shared/model/thread";
 
 @Component({
   selector: 'thread-section',
@@ -12,12 +17,40 @@ import {Observable} from "rxjs";
 })
 export class ThreadSectionComponent implements OnInit {
 
-    private userName$: Observable<string>;
+    userName$: Observable<string>;
+    unreadMessagesCounter$:Observable<number>;
+    threadSummaries$: Observable<ThreadSummaryVM[]>;
 
   constructor(private threadsService: ThreadsService, private store:Store<ApplicationState>) {
     this.userName$ = store
                       .skip(1)
-                      .map(this.mapStateToUserName)
+                      .map(mapStateToUserName);
+
+    this.unreadMessagesCounter$ = store
+                                    .skip(1)
+                                    .map(mapStateToUnreadMessagesCounter);
+
+    this.threadSummaries$ = store.select(
+        state => {
+            const threads = _.values<Thread>(state.storeData.threadsPerUser);
+
+            return threads.map(thread => {
+
+                const names = _.keys(thread.participants).map(participantId => state.storeData.participants[participantId].name);
+
+                const lastMessageId = _.last(thread.messageIds);
+                const lastMessage = state.storeData.messages[lastMessageId];
+
+                return {
+                    id: thread.id,
+                    participantNames: _.join(names, ","),
+                    lastMessageText: lastMessage.text,
+                    timestamp: lastMessage.timestamp
+                };
+
+            });
+        }
+    )
   }
 
   ngOnInit() {
@@ -30,8 +63,6 @@ export class ThreadSectionComponent implements OnInit {
       );
   }
 
-  mapStateToUserName(state: ApplicationState): string {
-      return state.storeData.participants[state.uiState.userId].name;
-  }
+
 
 }

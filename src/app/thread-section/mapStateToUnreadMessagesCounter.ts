@@ -12,6 +12,6 @@ export function mapStateToUnreadMessagesCounter(state: ApplicationState): number
 
     return _.values<Thread>(state.storeData.threadsPerUser)
         .reduce(
-            (acc,thread) => acc + thread.participants[currentUserId],
+            (acc,thread) => acc + (thread.participants[currentUserId] || 0),
             0);
 }

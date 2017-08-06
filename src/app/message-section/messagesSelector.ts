@@ -19,7 +19,7 @@ export function messagesSelector(state:ApplicationState): MessageVM[] {
 
     const messages  = messageIds.map(messageId => state.storeData.messages[messageId]);
 
-    return messages.map(_.partial(mapMessagesToMessageVM,state));
+    return messages.map(message => mapMessagesToMessageVM(state,message));
 
 
 }

@@ -15,6 +15,7 @@ import {LoadThreadsEffectService} from "./store/effects/load-threads-effect.serv
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {uiState} from "./store/reducers/uiStateReducer";
 import {storeData} from "./store/reducers/storeDataReducer";
+import { ChatMessageComponent } from './chat-message/chat-message.component';
 
 
 const reducers = {
@@ -31,7 +32,8 @@ const reducer = combineReducers(reducers);
     ThreadSectionComponent,
     MessageSectionComponent,
     MessageListComponent,
-    ThreadListComponent
+    ThreadListComponent,
+    ChatMessageComponent
   ],
   imports: [
     BrowserModule,

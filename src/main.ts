@@ -6,7 +6,37 @@ import { environment } from './environments/environment';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import {Observable} from "rxjs";
 
+//Extending the module
+declare module 'rxjs/Observable' {
+    interface Observable<T>{
+        debug: (...any) => Observable<T>
+    }
+}
+
+const debuggerOn = true;
+
+Observable.prototype.debug = function (message:string) {
+
+    return this.do(
+        nextValue => {
+            if(debuggerOn){
+                console.log(message,nextValue)
+            }
+        },
+        error => {
+            if(debuggerOn){
+                console.error(message,error)
+            }
+        },
+        () => {
+            if(debuggerOn){
+                console.log('Observable completed - ',message)
+            }
+        }
+    )
+};
 
 if (environment.production) {
   enableProdMode();

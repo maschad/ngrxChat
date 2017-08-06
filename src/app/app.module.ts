@@ -18,8 +18,8 @@ import {storeData} from "./store/reducers/storeDataReducer";
 
 
 const reducers = {
-    uiState,
-    storeData
+    uiState:uiState,
+    storeData:storeData
 };
 
 const reducer = combineReducers(reducers);

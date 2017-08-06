@@ -1,25 +1,35 @@
 import {StoreData, INITIAL_STORE_DATA_STATE} from "../store-data";
 import {Action} from "@ngrx/store";
-import {UserThreadsLoadedAction, USER_THREADS_LOADED_ACTION} from "../actions";
+import {
+    UserThreadsLoadedAction, USER_THREADS_LOADED_ACTION, SEND_NEW_MESSAGE_ACTION,
+    SendNewMessageAction
+} from "../actions";
 import * as _ from "lodash";
+import {tassign} from "tassign";
+import {Message} from "../../../../shared/model/message";
 
 /**
  * Created by carlos on 8/5/17.
  */
 
-export function storeData(state: StoreData = INITIAL_STORE_DATA_STATE, action:Action): StoreData {
+const uuid = require('uuid/V4');
 
-    switch (action.type){
+export function storeData(state: StoreData = INITIAL_STORE_DATA_STATE, action: Action): StoreData {
+
+    switch (action.type) {
 
         case USER_THREADS_LOADED_ACTION:
             return handleLoadUserThreadsAction(state, <UserThreadsLoadedAction>action);
+
+        case SEND_NEW_MESSAGE_ACTION:
+            return handleSendNewMessageAction(state, <SendNewMessageAction>action);
 
         default:
             return state;
     }
 }
 
-function handleLoadUserThreadsAction(state: StoreData, action:UserThreadsLoadedAction):StoreData {
+function handleLoadUserThreadsAction(state: StoreData, action: UserThreadsLoadedAction): StoreData {
 
     return {
         participants: _.keyBy(action.payload.participants, 'id'),
@@ -27,5 +37,25 @@ function handleLoadUserThreadsAction(state: StoreData, action:UserThreadsLoadedA
         threadsPerUser: _.keyBy(action.payload.threads, 'id')
     };
 
+}
+
+function handleSendNewMessageAction(state: StoreData, action: SendNewMessageAction): StoreData {
+    const newState = _.cloneDeep(state);
+
+    const currentThread = newState.threadsPerUser[action.payload.threadId];
+
+    const newMessage: Message = {
+        text: action.payload.text,
+        threadId: action.payload.threadId,
+        timestamp: new Date().getTime(),
+        participantId: action.payload.participantId,
+        id:uuid()
+    };
+
+    currentThread.messageIds.push(newMessage.id);
+
+    newState.messages[newMessage.id] = newMessage;
+
+    return newState;
 }
 

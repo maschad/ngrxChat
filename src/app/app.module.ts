@@ -17,6 +17,13 @@ import {uiState} from "./store/reducers/uiStateReducer";
 import {storeData} from "./store/reducers/storeDataReducer";
 
 
+const reducers = {
+    uiState,
+    storeData
+};
+
+const reducer = combineReducers(reducers);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,10 +37,7 @@ import {storeData} from "./store/reducers/storeDataReducer";
     BrowserModule,
     EffectsModule.run(LoadThreadsEffectService),
     HttpModule,
-    StoreModule.provideStore(combineReducers({
-        uiState,
-        storeData
-    })),
+    StoreModule.provideStore(reducer),
     StoreDevtoolsModule.instrumentOnlyWithExtension()
   ],
   providers: [ThreadsService],

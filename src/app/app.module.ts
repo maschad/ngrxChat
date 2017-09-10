@@ -16,6 +16,7 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 import {INITIAL_APPLICATION_STATE} from "./store/application-state";
 import {storeReducer} from "./reducer";
+import {WriteNewMessageEffectService} from "./store/effects/write-new-message-effect-service";
 
 
 
@@ -32,6 +33,7 @@ import {storeReducer} from "./reducer";
   imports: [
     BrowserModule,
     EffectsModule.run(LoadThreadsEffectService),
+    EffectsModule.run(WriteNewMessageEffectService),
     HttpModule,
     StoreModule.provideStore(storeReducer, INITIAL_APPLICATION_STATE),
     StoreDevtoolsModule.instrumentOnlyWithExtension()

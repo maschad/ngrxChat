@@ -11,8 +11,6 @@ import {compose} from "@ngrx/core/compose";
 export const combinedReducer = compose(storeFreeze, combineReducers)({uiState,storeData, router: routerReducer});
 
 
-
-
 export function storeReducer(state: ApplicationState, action: Action) {
     return combinedReducer(state, action);
 }

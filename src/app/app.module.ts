@@ -13,17 +13,11 @@ import {StoreModule, combineReducers} from "@ngrx/store";
 import {EffectsModule} from "@ngrx/effects";
 import {LoadThreadsEffectService} from "./store/effects/load-threads-effect.service";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {uiState} from "./store/reducers/uiStateReducer";
-import {storeData} from "./store/reducers/storeDataReducer";
 import { ChatMessageComponent } from './chat-message/chat-message.component';
+import {INITIAL_APPLICATION_STATE} from "./store/application-state";
+import {storeReducer} from "./reducer";
 
 
-const reducers = {
-    uiState:uiState,
-    storeData:storeData
-};
-
-const reducer = combineReducers(reducers);
 
 @NgModule({
   declarations: [
@@ -39,7 +33,7 @@ const reducer = combineReducers(reducers);
     BrowserModule,
     EffectsModule.run(LoadThreadsEffectService),
     HttpModule,
-    StoreModule.provideStore(reducer),
+    StoreModule.provideStore(storeReducer, INITIAL_APPLICATION_STATE),
     StoreDevtoolsModule.instrumentOnlyWithExtension()
   ],
   providers: [ThreadsService],

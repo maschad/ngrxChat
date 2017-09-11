@@ -6,6 +6,6 @@
 
     <thread-list [threads]="threadSummaries$ | async"
                  (threadSelected)="onThreadSelected($event)"
-                 [currentSelectedThread] ="currentSelectedThread$ | async"
+                 [currentSelectedThread] ="uiState?.currentThreadId"
     ></thread-list>
 </div>

@@ -15,7 +15,7 @@ export function uiState(state: UiState = INITIAL_UI_STATE, action:Action): UiSta
 
             const newState = tassign(state);
 
-            newState.currentThreadId = action.payload;
+            newState.currentThreadId = action.payload.selectedThreadId;
 
             return newState;
 

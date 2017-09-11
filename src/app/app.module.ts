@@ -17,6 +17,7 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
 import {INITIAL_APPLICATION_STATE} from "./store/application-state";
 import {storeReducer} from "./reducer";
 import {WriteNewMessageEffectService} from "./store/effects/write-new-message-effect-service";
+import {ServerNotificationsEffect} from "./store/effects/server-notifications-effect";
 
 
 
@@ -34,6 +35,7 @@ import {WriteNewMessageEffectService} from "./store/effects/write-new-message-ef
     BrowserModule,
     EffectsModule.run(LoadThreadsEffectService),
     EffectsModule.run(WriteNewMessageEffectService),
+    EffectsModule.run(ServerNotificationsEffect),
     HttpModule,
     StoreModule.provideStore(storeReducer, INITIAL_APPLICATION_STATE),
     StoreDevtoolsModule.instrumentOnlyWithExtension()

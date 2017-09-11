@@ -2,7 +2,7 @@ import {StoreData, INITIAL_STORE_DATA_STATE} from "../store-data";
 import {Action} from "@ngrx/store";
 import {
     UserThreadsLoadedAction, USER_THREADS_LOADED_ACTION, SEND_NEW_MESSAGE_ACTION,
-    SendNewMessageAction
+    SendNewMessageAction, NEW_MESSAGES_RECEIVED_ACTION, NewMessagesReceivedAction
 } from "../actions";
 import * as _ from "lodash";
 import {tassign} from "tassign";
@@ -23,6 +23,9 @@ export function storeData(state: StoreData = INITIAL_STORE_DATA_STATE, action: A
 
         case SEND_NEW_MESSAGE_ACTION:
             return handleSendNewMessageAction(state, <SendNewMessageAction>action);
+
+        case NEW_MESSAGES_RECEIVED_ACTION:
+            return handleNewMessagesReceivedAction(state, <NewMessagesReceivedAction>action);
 
         default:
             return state;
@@ -57,5 +60,20 @@ function handleSendNewMessageAction(state: StoreData, action: SendNewMessageActi
     newState.messages[newMessage.id] = newMessage;
 
     return newState;
+}
+
+function handleNewMessagesReceivedAction(state: StoreData, action: NewMessagesReceivedAction): StoreData {
+
+    const newState = _.cloneDeep(state);
+
+    const newMessages = action.payload;
+
+    newMessages.forEach(newMessage => {
+        newState.messages[newMessage.id] = newMessage;
+        newState.threadsPerUser[newMessage.threadId].messageIds.push(newMessage.id);
+    });
+
+    return newState;
+
 }
 

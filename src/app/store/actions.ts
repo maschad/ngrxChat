@@ -1,5 +1,6 @@
 import {Action} from "@ngrx/store";
 import {AllUserData} from "../../../shared/to/all-user-data";
+import {Message} from "../../../shared/model/message";
 /**
  * Created by carlos on 7/20/17.
  */
@@ -9,6 +10,7 @@ export const LOAD_USER_THREADS_ACTION = 'LOAD_USER_THREADS_ACTION';
 export const THREAD_SELECTED_ACTION = 'THREAD_SELECTED_ACTION';
 export const SELECT_USER_ACTION = 'SELECT_USER_ACTION';
 export const SEND_NEW_MESSAGE_ACTION = 'SEND_NEW_MESSAGE_ACTION';
+export const NEW_MESSAGES_RECEIVED_ACTION = 'NEW_MESSAGES_RECEIVED_ACTION';
 
 export class LoadUserThreadsAction implements Action {
 
@@ -57,4 +59,11 @@ export class SendNewMessageAction implements Action {
     constructor(public payload:SendNewMessageActionPayload) {
 
     }
+}
+
+export class NewMessagesReceivedAction implements Action {
+    readonly type: string = NEW_MESSAGES_RECEIVED_ACTION;
+
+    constructor(public payload?:Message[]){}
+
 }

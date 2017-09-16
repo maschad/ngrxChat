@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {AllUserData} from "../../../shared/to/all-user-data";
 import {Http, Headers} from "@angular/http";
 import 'rxjs/add/operator/map';
-import {SendNewMessageActionPayload} from "../store/actions";
+import {SendNewMessageActionPayload, ThreadSelectedAction} from "../store/actions";
 import {commonHttpHeaders} from "./commonHttpHeaders";
 import {Message} from "../../../shared/model/message";
 
@@ -30,6 +30,11 @@ export class ThreadsService {
     loadMessagesForUser(userId: number): Observable<Message[]> {
         return this.http.post('api/notifications/messages', null, commonHttpHeaders(userId)).map(res => res.json().payload);
     }
+
+    markMessagesAsRead(currentUserId:number,selectedThreadId:number): Observable<any> {
+        return this.http.patch(`/api/threads/${selectedThreadId}`,{read:true} ,commonHttpHeaders(currentUserId));
+    }
+
 
 
 
